@@ -1,4 +1,4 @@
-import { Building2, Heart, Menu, PhoneCall, X } from "lucide-react";
+import { Building2, Home, KeyRound, Search, Heart, Menu, PhoneCall, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { useSavedProperties } from "../../context/SavedPropertiesContext";
@@ -8,10 +8,14 @@ import { Button } from "../ui/Button";
 
 export const Navbar: React.FC = () => {
   const [isOverDarkSection, setIsOverDarkSection] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
+  const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
   const { savedCount } = useSavedProperties();
   const location = useLocation();
+
+  const isHomePage = location.pathname === "/" && location.search === "";
 
   useEffect(() => {
     const detectSectionTheme = () => {
@@ -27,6 +31,7 @@ export const Navbar: React.FC = () => {
       });
 
       setIsOverDarkSection(isOverDark);
+      setIsScrolled(window.scrollY > 40);
     };
 
     detectSectionTheme();
@@ -43,11 +48,11 @@ export const Navbar: React.FC = () => {
   }, [location.pathname, location.search]);
 
   const navLinks = [
-    { label: "Home", href: "/", isExact: true },
-    { label: "Buy", href: "/properties?listingType=sale" },
-    { label: "Rent", href: "/properties?listingType=rent" },
-    { label: "Properties", href: "/properties" },
-    { label: "Saved", href: "/saved", badge: savedCount },
+    { label: "Home", href: "/", isExact: true, icon: Home },
+    { label: "Buy", href: "/properties?listingType=sale", icon: KeyRound },
+    { label: "Rent", href: "/properties?listingType=rent", icon: Building2 },
+    { label: "Properties", href: "/properties", icon: Search },
+    { label: "Saved", href: "/saved", badge: savedCount, icon: Heart },
   ];
 
   const isLinkActive = (href: string, isExact?: boolean) => {
@@ -65,24 +70,44 @@ export const Navbar: React.FC = () => {
     return location.search.includes(query);
   };
 
+  // Dechunking & Icon collapsing happen ONLY on inner pages when scrolled.
+  // Homepage NEVER dechunks and NEVER changes nav position on scroll.
+  const isDechunked = !isHomePage && isScrolled;
+  const isIconMode = !isHomePage && isScrolled;
+
   return (
     <>
-      {/* Dynamic Section-Aware Floating Centered Capsule Header */}
-      <header className="sticky top-3 sm:top-4 z-50 w-full px-3 sm:px-6 lg:px-8 pointer-events-none">
+      {/* Dynamic Floating Centered Header Container */}
+      <header className="sticky top-2 sm:top-3 z-50 w-full px-3 sm:px-6 lg:px-8 pointer-events-none">
         <div
           className={cn(
-            "pointer-events-auto max-w-6xl mx-auto rounded-full border transition-all duration-500 ease-in-out px-4 py-2 sm:py-2.5 flex items-center justify-between backdrop-blur-xl",
-            isOverDarkSection
-              ? "bg-white/80 border-white/40 text-slate-900 shadow-xl shadow-slate-950/15"
-              : "bg-slate-950/85 border-slate-800 text-white shadow-2xl shadow-slate-950/30"
+            "pointer-events-auto transition-all duration-500 ease-in-out relative flex items-center justify-between mx-auto",
+            isDechunked
+              ? "w-full max-w-full bg-transparent border-0 p-0 shadow-none"
+              : "max-w-6xl rounded-full border px-4 py-2 sm:py-2.5 backdrop-blur-xl",
+            !isDechunked && (
+              isOverDarkSection
+                ? "bg-white/80 border-white/40 text-slate-900 shadow-xl shadow-slate-950/15"
+                : "bg-slate-950/85 border-slate-800 text-white shadow-2xl shadow-slate-950/30"
+            )
           )}
         >
-          {/* Brand Logo & Wordmark */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0 pl-1">
+          {/* Left Pod: Brand Logo & Wordmark */}
+          <Link
+            to="/"
+            className={cn(
+              "flex items-center gap-2.5 group shrink-0 transition-all duration-500 ease-in-out z-20",
+              isDechunked
+                ? "rounded-full bg-slate-950/95 backdrop-blur-xl border border-slate-800 text-white px-4 py-2 shadow-2xl shadow-slate-950/40 hover:border-slate-700"
+                : "pl-1"
+            )}
+          >
             <div
               className={cn(
                 "w-9 h-9 rounded-full flex items-center justify-center font-black tracking-tighter text-lg transition-all duration-500 ease-in-out",
-                isOverDarkSection
+                isDechunked
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+                  : isOverDarkSection
                   ? "bg-slate-900 text-white group-hover:bg-amber-600 shadow-xs"
                   : "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
               )}
@@ -92,16 +117,24 @@ export const Navbar: React.FC = () => {
             <div className="flex flex-col">
               <span
                 className={cn(
-                  "text-xl font-black tracking-tight leading-none transition-colors duration-500 ease-in-out",
-                  isOverDarkSection ? "text-slate-900 group-hover:text-amber-700" : "text-white group-hover:text-amber-300"
+                  "text-xl font-black tracking-tight leading-none transition-colors duration-500",
+                  isDechunked
+                    ? "text-white group-hover:text-amber-300"
+                    : isOverDarkSection
+                    ? "text-slate-900 group-hover:text-amber-700"
+                    : "text-white group-hover:text-amber-300"
                 )}
               >
                 Haven
               </span>
               <span
                 className={cn(
-                  "text-[9px] tracking-widest uppercase font-extrabold mt-0.5 transition-colors duration-500 ease-in-out",
-                  isOverDarkSection ? "text-slate-500" : "text-slate-400"
+                  "text-[9px] tracking-widest uppercase font-extrabold mt-0.5 transition-colors duration-500",
+                  isDechunked
+                    ? "text-slate-400"
+                    : isOverDarkSection
+                    ? "text-slate-500"
+                    : "text-slate-400"
                 )}
               >
                 Real Estate
@@ -109,38 +142,80 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Centered Recessed "Dip" Desktop Navigation Track */}
+          {/* Center Pod: Navigation Track (Homepage is ALWAYS centered in main capsule; Inner pages dock on scroll) */}
           <nav
+            onMouseLeave={() => setHoveredNavIndex(null)}
             className={cn(
-              "hidden md:flex items-center gap-1 p-1 rounded-full border transition-all duration-500 ease-in-out",
-              isOverDarkSection
-                ? "bg-slate-100/90 border-slate-200/80 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.06)]"
-                : "bg-white/10 border-white/15 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.3)]"
+              "hidden md:flex items-center gap-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] absolute left-1/2 -translate-x-1/2 z-10",
+              isIconMode
+                ? "-top-2 sm:-top-3 rounded-b-2xl rounded-t-md bg-slate-950/40 backdrop-blur-md border border-white/20 p-1 shadow-lg"
+                : "p-1 rounded-full border",
+              !isIconMode && (
+                isOverDarkSection
+                  ? "bg-slate-100/90 border-slate-200/80 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.06)]"
+                  : "bg-white/10 border-white/15 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.3)]"
+              )
             )}
           >
-            {navLinks.map((link) => {
+            {navLinks.map((link, index) => {
               const active = isLinkActive(link.href, link.isExact);
+              const isHovered = hoveredNavIndex === index;
+              const LinkIcon = link.icon;
+
               return (
                 <Link
                   key={link.label}
                   to={link.href}
+                  title={link.label}
+                  onMouseEnter={() => setHoveredNavIndex(index)}
                   className={cn(
-                    "px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ease-in-out flex items-center gap-1.5 relative",
-                    active
-                      ? isOverDarkSection
-                        ? "bg-slate-950 text-white shadow-xs font-extrabold"
-                        : "bg-white text-slate-950 shadow-xs font-extrabold"
-                      : isOverDarkSection
-                      ? "text-slate-700 hover:text-slate-950 hover:bg-white/80"
-                      : "text-slate-200 hover:text-white hover:bg-white/10"
+                    "relative flex items-center justify-center transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden",
+                    isIconMode
+                      ? isHovered
+                        ? "px-3 py-1.5 bg-white text-slate-950 shadow-md scale-[1.03] rounded-xl"
+                        : active
+                        ? "px-2.5 py-1.5 bg-white/90 text-slate-950 shadow-xs rounded-xl"
+                        : "px-2.5 py-1.5 text-slate-200 hover:text-white hover:bg-white/20 rounded-xl"
+                      : "px-4 py-1.5 text-xs font-bold rounded-full",
+                    !isIconMode && (
+                      active
+                        ? !isOverDarkSection
+                          ? "bg-white text-slate-950 shadow-xs font-extrabold"
+                          : "bg-slate-950 text-white shadow-xs font-extrabold"
+                        : !isOverDarkSection
+                        ? "text-slate-200 hover:text-white hover:bg-white/10"
+                        : "text-slate-700 hover:text-slate-950 hover:bg-white/80"
+                    )
                   )}
                 >
-                  <span>{link.label}</span>
+                  {isIconMode ? (
+                    <>
+                      <LinkIcon className="w-4 h-4 shrink-0 transition-transform duration-300" />
+                      <span
+                        className={cn(
+                          "whitespace-nowrap overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] text-xs font-bold inline-block",
+                          isHovered
+                            ? "max-w-[100px] opacity-100 pl-1.5"
+                            : "max-w-0 opacity-0 pl-0"
+                        )}
+                      >
+                        {link.label}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs font-bold">{link.label}</span>
+                  )}
+
                   {typeof link.badge === "number" && link.badge > 0 && (
                     <span
                       className={cn(
-                        "text-[10px] font-extrabold px-1.5 py-0.2 rounded-full transition-colors duration-300",
-                        active ? "bg-amber-400 text-slate-950" : "bg-amber-600 text-white"
+                        "text-[10px] font-extrabold rounded-full transition-colors duration-300 shrink-0 ml-1",
+                        isIconMode
+                          ? isHovered || active
+                            ? "bg-amber-500 text-slate-950 px-1.5 py-0.2"
+                            : "bg-amber-500/80 text-slate-950 px-1.5 py-0.2"
+                          : "px-1.5 py-0.2",
+                        !isIconMode && (active ? "bg-amber-400 text-slate-950" : "bg-amber-600 text-white")
                       )}
                     >
                       {link.badge}
@@ -151,13 +226,22 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action Controls */}
-          <div className="flex items-center gap-2 sm:gap-3 pr-1">
+          {/* Right Pod: Action Controls */}
+          <div
+            className={cn(
+              "flex items-center gap-2 sm:gap-3 transition-all duration-500 ease-in-out z-20",
+              isDechunked
+                ? "rounded-full bg-slate-950/95 backdrop-blur-xl border border-slate-800 p-1.5 px-3.5 shadow-2xl shadow-slate-950/40"
+                : "pr-1"
+            )}
+          >
             {/* Wishlist Button */}
             <div
               className={cn(
                 "p-0.5 rounded-full transition-all duration-500 ease-in-out",
-                isOverDarkSection
+                isDechunked
+                  ? "bg-white/10 border border-white/15"
+                  : isOverDarkSection
                   ? "bg-slate-100/90 border border-slate-200/80 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]"
                   : "bg-white/10 border border-white/15 shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]"
               )}
@@ -166,14 +250,19 @@ export const Navbar: React.FC = () => {
                 to="/saved"
                 className={cn(
                   "relative p-2 rounded-full border transition-all duration-300 ease-in-out flex items-center justify-center",
-                  isOverDarkSection
-                    ? "bg-white border-slate-200 text-slate-900 hover:bg-slate-50 shadow-2xs"
-                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  isDechunked || !isOverDarkSection
+                    ? "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    : "bg-white border-slate-200 text-slate-900 hover:bg-slate-50 shadow-2xs"
                 )}
                 aria-label="View saved properties"
                 title="Saved Shortlist"
               >
-                <Heart className={cn("w-4 h-4 transition-colors duration-300", isOverDarkSection ? "text-slate-700" : "text-white")} />
+                <Heart
+                  className={cn(
+                    "w-4 h-4 transition-colors duration-300",
+                    isDechunked || !isOverDarkSection ? "text-white" : "text-slate-700"
+                  )}
+                />
                 {savedCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
                     {savedCount}
@@ -182,9 +271,9 @@ export const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* Enquire Now CTA */}
+            {/* Enquire CTA */}
             <Button
-              variant={isOverDarkSection ? "dark" : "secondary"}
+              variant={isDechunked || !isOverDarkSection ? "secondary" : "dark"}
               size="sm"
               className="hidden sm:inline-flex font-bold rounded-full px-4 shadow-xs transition-all duration-500 active:scale-95"
               onClick={() => setIsEnquiryModalOpen(true)}
@@ -198,9 +287,9 @@ export const Navbar: React.FC = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={cn(
                 "md:hidden p-2 rounded-full border transition-colors duration-300",
-                isOverDarkSection
-                  ? "bg-slate-100 border-slate-200 text-slate-900"
-                  : "bg-white/10 border-white/20 text-white"
+                isDechunked || !isOverDarkSection
+                  ? "bg-white/10 border-white/20 text-white"
+                  : "bg-slate-100 border-slate-200 text-slate-900"
               )}
               aria-label="Toggle mobile menu"
             >
@@ -214,9 +303,9 @@ export const Navbar: React.FC = () => {
           <div
             className={cn(
               "pointer-events-auto md:hidden mt-2 max-w-6xl mx-auto rounded-3xl border p-4 space-y-3 shadow-2xl transition-all duration-500 ease-in-out animate-in slide-in-from-top-2",
-              isOverDarkSection
-                ? "bg-white/95 backdrop-blur-2xl border-slate-200 text-slate-900"
-                : "bg-slate-950/95 backdrop-blur-2xl border-slate-800 text-white"
+              isDechunked || !isOverDarkSection
+                ? "bg-slate-950/95 backdrop-blur-2xl border-slate-800 text-white"
+                : "bg-white/95 backdrop-blur-2xl border-slate-200 text-slate-900"
             )}
           >
             <div className="space-y-1 py-1">
@@ -229,12 +318,12 @@ export const Navbar: React.FC = () => {
                     className={cn(
                       "flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-2xl transition-colors duration-300",
                       active
-                        ? isOverDarkSection
-                          ? "bg-slate-950 text-white font-black"
-                          : "bg-white text-slate-950 font-black"
-                        : isOverDarkSection
-                        ? "text-slate-800 hover:bg-slate-100"
-                        : "text-slate-200 hover:bg-white/10"
+                        ? isDechunked || !isOverDarkSection
+                          ? "bg-white text-slate-950 font-black"
+                          : "bg-slate-950 text-white font-black"
+                        : isDechunked || !isOverDarkSection
+                        ? "text-slate-200 hover:bg-white/10"
+                        : "text-slate-800 hover:bg-slate-100"
                     )}
                   >
                     <span>{link.label}</span>
@@ -249,7 +338,7 @@ export const Navbar: React.FC = () => {
             </div>
             <div className="pt-2">
               <Button
-                variant={isOverDarkSection ? "dark" : "secondary"}
+                variant={isDechunked || !isOverDarkSection ? "secondary" : "dark"}
                 size="md"
                 className="w-full justify-center font-bold rounded-2xl transition-all duration-500"
                 onClick={() => {
