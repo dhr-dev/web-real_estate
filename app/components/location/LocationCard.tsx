@@ -14,7 +14,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({ location, className 
     <Link
       to={`/properties?city=${encodeURIComponent(location.name)}`}
       className={cn(
-        "group relative h-80 rounded-2xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-6",
+        "group relative h-80 rounded-2xl overflow-hidden border border-white/10 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col justify-end p-6",
         className
       )}
     >
