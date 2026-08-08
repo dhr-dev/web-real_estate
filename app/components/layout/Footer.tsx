@@ -18,18 +18,18 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-slate-400 text-sm max-w-sm leading-relaxed">
-              Find a place that feels like home. Haven is a premier property discovery platform curated for international buyers and renters across the UK and Europe.
+              Find a place that feels like home. Haven is a modern property discovery platform helping buyers and renters find properties across the UK and Europe.
             </p>
             <div className="pt-2 flex items-center gap-4 text-slate-400 text-sm">
               <span className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-amber-500" /> London • Amsterdam • Lisbon
+                <MapPin className="w-4 h-4 text-amber-500" /> London • Manchester • Edinburgh • Amsterdam • Lisbon
               </span>
             </div>
           </div>
 
           {/* Column 2: Quick Search Links */}
           <div className="space-y-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">
               Discover
             </h4>
             <ul className="space-y-2 text-sm">
@@ -40,17 +40,17 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/properties?listingType=rent" className="hover:text-white transition-colors">
-                  Luxury Lettings
+                  Property Lettings
                 </Link>
               </li>
               <li>
-                <Link to="/properties?propertyType=penthouse" className="hover:text-white transition-colors">
-                  Penthouses & Lofts
+                <Link to="/properties?propertyType=apartment" className="hover:text-white transition-colors">
+                  Apartments & Flats
                 </Link>
               </li>
               <li>
                 <Link to="/properties?propertyType=house" className="hover:text-white transition-colors">
-                  Country Estates & Mansions
+                  Family Houses
                 </Link>
               </li>
               <li>
@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
 
           {/* Column 3: Locations */}
           <div className="space-y-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">
               Locations
             </h4>
             <ul className="space-y-2 text-sm">
@@ -75,31 +75,31 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/properties?city=Manchester" className="hover:text-white transition-colors">
-                  Manchester Waterside
+                  Manchester Listings
                 </Link>
               </li>
               <li>
                 <Link to="/properties?city=Edinburgh" className="hover:text-white transition-colors">
-                  Edinburgh New Town
+                  Edinburgh Properties
                 </Link>
               </li>
               <li>
                 <Link to="/properties?city=Amsterdam" className="hover:text-white transition-colors">
-                  Amsterdam Canal Belt
+                  Amsterdam Homes
                 </Link>
               </li>
               <li>
                 <Link to="/properties?city=Lisbon" className="hover:text-white transition-colors">
-                  Lisbon Coast & Chiado
+                  Lisbon Listings
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Contact & Advisory */}
+          {/* Column 4: Contact Support */}
           <div className="space-y-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-400">
-              Advisory Office
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">
+              Property Support
             </h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li className="flex items-center gap-2">
@@ -108,10 +108,10 @@ export const Footer: React.FC = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-amber-500 shrink-0" />
-                <span>advisory@haven-realestate.co.uk</span>
+                <span>support@haven-realestate.co.uk</span>
               </li>
               <li className="pt-2 text-xs leading-relaxed text-slate-500">
-                18 Cadogan Square, Belgravia<br />London SW1X 0JU
+                18 Cadogan Square, Chelsea<br />London SW1X 0JU
               </li>
             </ul>
           </div>
@@ -121,7 +121,7 @@ export const Footer: React.FC = () => {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Haven Real Estate Platform. All rights reserved.</p>
           <p className="text-center sm:text-right">
-            Portfolio showcase application. Built for international commercial demonstration.
+            Portfolio showcase application. Built for commercial demonstration.
           </p>
         </div>
       </div>

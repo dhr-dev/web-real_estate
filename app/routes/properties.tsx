@@ -26,12 +26,18 @@ export default function PropertiesPage() {
     const listingType = searchParams.get("listingType") as ListingType | null;
     const city = searchParams.get("city") || "all";
     const propertyType = searchParams.get("propertyType") as PropertyType | null;
+    const bedroomsParam = searchParams.get("bedrooms");
+    const bedrooms = bedroomsParam && bedroomsParam !== "any" ? Number(bedroomsParam) : "any";
+    const maxPriceParam = searchParams.get("maxPrice");
+    const maxPrice = maxPriceParam && maxPriceParam !== "all" ? Number(maxPriceParam) : 10000000;
     const q = searchParams.get("q") || "";
 
     return {
       listingType: listingType || "all",
       city: city,
       propertyType: propertyType || "all",
+      bedrooms: bedrooms,
+      maxPrice: maxPrice,
       searchQuery: q,
     };
   }, [searchParams]);
@@ -153,6 +159,15 @@ export default function PropertiesPage() {
             <span className="inline-flex items-center gap-1 text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-medium">
               Beds: {filters.bedrooms}+
               <button onClick={() => updateFilter("bedrooms", "any")} className="hover:text-amber-300">
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+
+          {filters.maxPrice < 10000000 && (
+            <span className="inline-flex items-center gap-1 text-xs bg-slate-900 text-white px-2.5 py-1 rounded-full font-medium">
+              Max Price: £{new Intl.NumberFormat("en-GB").format(filters.maxPrice)}
+              <button onClick={() => updateFilter("maxPrice", 10000000)} className="hover:text-amber-300">
                 <X className="w-3 h-3" />
               </button>
             </span>

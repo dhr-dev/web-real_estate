@@ -1,4 +1,4 @@
-import { Building2, Home, MapPin, Search } from "lucide-react";
+import { Building2, Home, MapPin, Search, SlidersHorizontal, PoundSterling, Bed } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { ListingType, PropertyType } from "../../types/property";
@@ -10,6 +10,8 @@ export interface SearchBarProps {
   initialCity?: string;
   initialPropertyType?: PropertyType | "all";
   initialSearchQuery?: string;
+  initialBedrooms?: number | "any";
+  initialMaxPrice?: number;
   className?: string;
   variant?: "hero" | "compact";
 }
@@ -19,6 +21,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   initialCity = "all",
   initialPropertyType = "all",
   initialSearchQuery = "",
+  initialBedrooms = "any",
+  initialMaxPrice = 10000000,
   className,
   variant = "hero",
 }) => {
@@ -26,6 +30,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [listingType, setListingType] = useState<ListingType>(initialListingType);
   const [city, setCity] = useState<string>(initialCity);
   const [propertyType, setPropertyType] = useState<string>(initialPropertyType);
+  const [bedrooms, setBedrooms] = useState<string>(String(initialBedrooms));
+  const [maxPrice, setMaxPrice] = useState<string>(initialMaxPrice < 10000000 ? String(initialMaxPrice) : "all");
   const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -34,6 +40,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     if (listingType) params.set("listingType", listingType);
     if (city !== "all") params.set("city", city);
     if (propertyType !== "all") params.set("propertyType", propertyType);
+    if (bedrooms !== "any") params.set("bedrooms", bedrooms);
+    if (maxPrice !== "all") params.set("maxPrice", maxPrice);
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
 
     navigate(`/properties?${params.toString()}`);
@@ -42,17 +50,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div
       className={cn(
-        "bg-white rounded-2xl shadow-xl border border-slate-200/80 p-3 sm:p-4 transition-all",
+        "bg-white rounded-2xl shadow-xl border border-slate-200/90 p-4 sm:p-5 transition-all",
+        variant === "hero" ? "ring-1 ring-slate-900/5 shadow-2xl" : "",
         className
       )}
     >
-      {/* Listing Type Tabs (Buy / Rent) */}
-      <div className="flex items-center gap-2 pb-3 border-b border-slate-100 mb-3">
+      {/* Listing Type Switcher (Buy / Rent) */}
+      <div className="flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
         <button
           type="button"
           onClick={() => setListingType("sale")}
           className={cn(
-            "px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+            "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
             listingType === "sale"
               ? "bg-slate-900 text-white shadow-xs"
               : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -64,7 +73,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           type="button"
           onClick={() => setListingType("rent")}
           className={cn(
-            "px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
+            "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
             listingType === "rent"
               ? "bg-slate-900 text-white shadow-xs"
               : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -74,76 +83,123 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         </button>
       </div>
 
-      {/* Form Fields Grid */}
-      <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-        {/* City Select */}
-        <div className="md:col-span-3 relative">
-          <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-            Location
-          </label>
-          <div className="relative flex items-center">
-            <MapPin className="w-4 h-4 text-amber-600 absolute left-3 pointer-events-none" />
+      {/* Main Search Controls */}
+      <form onSubmit={handleSearch} className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+          {/* Location */}
+          <div className="lg:col-span-3">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Location
+            </label>
+            <div className="relative flex items-center">
+              <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+              >
+                <option value="all">All UK & Europe</option>
+                <option value="London">London, UK</option>
+                <option value="Manchester">Manchester, UK</option>
+                <option value="Edinburgh">Edinburgh, UK</option>
+                <option value="Bristol">Bristol, UK</option>
+                <option value="Amsterdam">Amsterdam, NL</option>
+                <option value="Lisbon">Lisbon, PT</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Property Type */}
+          <div className="lg:col-span-3">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Property Type
+            </label>
+            <div className="relative flex items-center">
+              <Home className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+              <select
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+              >
+                <option value="all">All Types</option>
+                <option value="apartment">Apartments</option>
+                <option value="house">Houses</option>
+                <option value="townhouse">Townhouses</option>
+                <option value="penthouse">Penthouses</option>
+                <option value="villa">Villas</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Bedrooms */}
+          <div className="lg:col-span-2">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Bedrooms
+            </label>
+            <div className="relative flex items-center">
+              <Bed className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+              <select
+                value={bedrooms}
+                onChange={(e) => setBedrooms(e.target.value)}
+                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+              >
+                <option value="any">Any</option>
+                <option value="1">1+ Bed</option>
+                <option value="2">2+ Beds</option>
+                <option value="3">3+ Beds</option>
+                <option value="4">4+ Beds</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Max Price */}
+          <div className="lg:col-span-2">
+            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Max Price
+            </label>
             <select
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-9 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl px-3 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
             >
-              <option value="all">All Locations (UK & EU)</option>
-              <option value="London">London, UK</option>
-              <option value="Manchester">Manchester, UK</option>
-              <option value="Edinburgh">Edinburgh, UK</option>
-              <option value="Bristol">Bristol, UK</option>
-              <option value="Amsterdam">Amsterdam, Netherlands</option>
-              <option value="Lisbon">Lisbon, Portugal</option>
+              <option value="all">Any Price</option>
+              {listingType === "sale" ? (
+                <>
+                  <option value="350000">Up to £350,000</option>
+                  <option value="500000">Up to £500,000</option>
+                  <option value="750000">Up to £750,000</option>
+                  <option value="1000000">Up to £1,000,000</option>
+                  <option value="1500000">Up to £1,500,000</option>
+                </>
+              ) : (
+                <>
+                  <option value="1500">Up to £1,500 / mo</option>
+                  <option value="2000">Up to £2,000 / mo</option>
+                  <option value="2500">Up to £2,500 / mo</option>
+                  <option value="3500">Up to £3,500 / mo</option>
+                </>
+              )}
             </select>
           </div>
-        </div>
 
-        {/* Property Type Select */}
-        <div className="md:col-span-3 relative">
-          <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-            Property Type
-          </label>
-          <div className="relative flex items-center">
-            <Home className="w-4 h-4 text-amber-600 absolute left-3 pointer-events-none" />
-            <select
-              value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value)}
-              className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-9 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
-            >
-              <option value="all">All Property Types</option>
-              <option value="house">Houses & Estates</option>
-              <option value="apartment">Apartments & Flats</option>
-              <option value="penthouse">Penthouses</option>
-              <option value="townhouse">Townhouses</option>
-              <option value="villa">Villas</option>
-            </select>
+          {/* Search Button */}
+          <div className="lg:col-span-2 pt-1 lg:pt-5">
+            <Button type="submit" variant="primary" size="md" className="w-full h-[42px] font-bold shadow-md">
+              <Search className="w-4 h-4" />
+              <span>Search</span>
+            </Button>
           </div>
         </div>
 
-        {/* Search Keyword Input */}
-        <div className="md:col-span-4 relative">
-          <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-            Keywords / Street / Area
-          </label>
-          <div className="relative flex items-center">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="e.g. Belgravia, Garden, Concierge..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm rounded-xl pl-9 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors placeholder:text-slate-400"
-            />
-          </div>
-        </div>
-
-        {/* Submit Search Button */}
-        <div className="md:col-span-2 pt-2 md:pt-4">
-          <Button type="submit" variant="primary" size="md" className="w-full h-[42px] font-semibold shadow-md">
-            <Search className="w-4 h-4 text-amber-400" />
-            <span>Search</span>
-          </Button>
+        {/* Search Keyword Option */}
+        <div className="pt-2">
+          <input
+            type="text"
+            placeholder="Search by area, postcode, or keyword (e.g. Garden, Balcony, Richmond...)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-slate-50/70 hover:bg-slate-50 text-slate-800 text-xs rounded-xl px-3.5 py-2 border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors placeholder:text-slate-400"
+          />
         </div>
       </form>
     </div>

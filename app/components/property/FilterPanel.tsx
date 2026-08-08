@@ -133,6 +133,36 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </select>
       </div>
 
+      {/* Max Price Filter */}
+      <div className="space-y-2">
+        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+          Maximum Price
+        </label>
+        <select
+          value={filters.maxPrice < 10000000 ? String(filters.maxPrice) : "all"}
+          onChange={(e) => onUpdateFilter("maxPrice", e.target.value === "all" ? 10000000 : Number(e.target.value))}
+          className="w-full bg-slate-50 text-slate-900 text-sm font-medium rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+        >
+          <option value="all">Any Price</option>
+          {filters.listingType === "rent" ? (
+            <>
+              <option value="1500">Up to £1,500 / mo</option>
+              <option value="2000">Up to £2,000 / mo</option>
+              <option value="2500">Up to £2,500 / mo</option>
+              <option value="3500">Up to £3,500 / mo</option>
+            </>
+          ) : (
+            <>
+              <option value="350000">Up to £350,000</option>
+              <option value="500000">Up to £500,000</option>
+              <option value="750000">Up to £750,000</option>
+              <option value="1000000">Up to £1,000,000</option>
+              <option value="1500000">Up to £1,500,000</option>
+            </>
+          )}
+        </select>
+      </div>
+
       {/* 4. Bedrooms */}
       <div className="space-y-2">
         <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
