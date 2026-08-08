@@ -45,9 +45,9 @@ export default function HomePage() {
           <img
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000"
             alt="Haven Real Estate Background"
-            className="w-full h-full object-cover object-center opacity-25 filter brightness-90"
+            className="w-full h-full object-cover object-center opacity-60 filter brightness-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/45 via-slate-950/65 to-slate-950" />
         </div>
 
         {/* Hero Content Container */}

@@ -15,12 +15,13 @@ export default function AboutPage() {
     <div className="space-y-16 pb-16">
       {/* Product Hero */}
       <section className="relative bg-slate-950 text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-20">
+        <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000"
             alt="Haven Platform"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-55 filter brightness-105"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/45 via-slate-950/70 to-slate-950" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
           <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3.5 py-1.5 rounded-full border border-amber-400/20">
