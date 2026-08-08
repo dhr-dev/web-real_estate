@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import { FloatingChatWidget } from "./components/layout/FloatingChatWidget";
 import { Footer } from "./components/layout/Footer";
 import { Navbar } from "./components/layout/Navbar";
 import { PageTransition } from "./components/ui/PageTransition";
@@ -44,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <main className="flex-1">{children}</main>
           </PageTransition>
           <Footer />
+          <FloatingChatWidget />
         </SavedPropertiesProvider>
         <ScrollRestoration />
         <Scripts />

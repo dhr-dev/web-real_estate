@@ -120,8 +120,11 @@ export const Footer: React.FC = () => {
         {/* Bottom copyright & disclaimer */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} Haven Real Estate Platform. All rights reserved.</p>
-          <p className="text-center sm:text-right">
-            Portfolio showcase application. Built for commercial demonstration.
+          <p className="text-center sm:text-right flex items-center gap-1.5 font-medium">
+            <span>Crafted with excellence by</span>
+            <span className="font-extrabold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20 text-slate-200">
+              NeoInfinity
+            </span>
           </p>
         </div>
       </div>
