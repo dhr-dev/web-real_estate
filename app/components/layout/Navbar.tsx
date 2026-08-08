@@ -42,8 +42,8 @@ export const Navbar: React.FC = () => {
         className={cn(
           "sticky top-0 z-40 w-full transition-all duration-300",
           isScrolled
-            ? "bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-3.5"
-            : "bg-white border-b border-slate-100 py-5"
+            ? "bg-white/90 backdrop-blur-md border-b border-[#e5e3dd] shadow-2xs py-3.5"
+            : "bg-[#faf9f6] border-b border-[#e5e3dd] py-4"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">

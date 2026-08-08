@@ -21,17 +21,17 @@ export default function SavedPropertiesPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#e5e3dd]">
         <div>
           <div className="flex items-center gap-2 text-rose-600 font-bold text-xs uppercase tracking-wider">
             <Heart className="w-4 h-4 fill-rose-600" />
-            <span>Saved Portfolio Wishlist</span>
+            <span>Saved Shortlist</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">
             Saved Properties ({savedProperties.length})
           </h1>
           <p className="text-slate-500 text-sm mt-1">
-            Your saved shortlist of prime architectural residences and luxury rentals.
+            Your personal shortlist of saved properties for sale and rent.
           </p>
         </div>
 
@@ -54,7 +54,7 @@ export default function SavedPropertiesPage() {
 
       {/* Grid or Empty State */}
       {savedProperties.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-dashed border-slate-300 p-12 sm:p-16 text-center space-y-4 max-w-xl mx-auto my-12 shadow-xs">
+        <div className="bg-white rounded-3xl border border-[#e5e3dd] p-12 sm:p-16 text-center space-y-4 max-w-xl mx-auto my-12 shadow-2xs">
           <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto shadow-inner">
             <Heart className="w-8 h-8" />
           </div>

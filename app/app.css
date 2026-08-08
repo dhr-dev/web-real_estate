@@ -4,11 +4,18 @@
 @layer base {
   :root {
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Warm-neutral surface tokens */
+    --color-canvas: #faf9f6;        /* Soft warm off-white main background */
+    --color-surface: #ffffff;       /* Crisp white cards & primary content */
+    --color-surface-muted: #f3f2ee; /* Secondary warm section background */
+    --color-surface-subtle: #f8f7f4;/* Soft warm input / badge background */
+    --color-border-warm: #e5e3dd;   /* Subtle warm grey border */
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
+    background-color: var(--color-canvas);
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
   }
@@ -27,15 +34,15 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f1f0eb;
   border-radius: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d6d3cb;
   border-radius: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #b8b4a9;
 }

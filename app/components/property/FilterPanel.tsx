@@ -40,12 +40,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onCloseMobileDrawer,
 }) => {
   return (
-    <div className={cn("bg-white rounded-2xl border border-slate-200 p-5 space-y-6 shadow-xs", className)}>
+    <div className={cn("bg-white rounded-2xl border border-[#e5e3dd] p-5 space-y-6 shadow-2xs", className)}>
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#e5e3dd]">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-amber-600" />
-          <h3 className="font-serif font-bold text-slate-900 text-lg">Filter Properties</h3>
+          <Filter className="w-4 h-4 text-amber-800" />
+          <h3 className="font-extrabold text-slate-900 text-lg tracking-tight">Filter Properties</h3>
           {activeFilterCount > 0 && (
             <span className="bg-amber-100 text-amber-900 text-xs font-bold px-2 py-0.5 rounded-full">
               {activeFilterCount}
@@ -75,7 +75,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
           Listing Intent
         </label>
-        <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-xl">
+        <div className="grid grid-cols-3 gap-1.5 p-1 bg-[#f3f2ee] rounded-xl border border-[#e5e3dd]">
           {(["all", "sale", "rent"] as const).map((type) => (
             <button
               key={type}
@@ -84,7 +84,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               className={cn(
                 "py-1.5 text-xs font-bold rounded-lg capitalize transition-all cursor-pointer",
                 filters.listingType === type
-                  ? "bg-white text-slate-900 shadow-xs"
+                  ? "bg-white text-slate-900 shadow-2xs"
                   : "text-slate-600 hover:text-slate-900"
               )}
             >
@@ -102,7 +102,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <select
           value={filters.city}
           onChange={(e) => onUpdateFilter("city", e.target.value)}
-          className="w-full bg-slate-50 text-slate-900 text-sm font-medium rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
         >
           <option value="all">All Cities</option>
           <option value="London">London, UK</option>
@@ -122,7 +122,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <select
           value={filters.propertyType}
           onChange={(e) => onUpdateFilter("propertyType", e.target.value as PropertyType | "all")}
-          className="w-full bg-slate-50 text-slate-900 text-sm font-medium rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
         >
           <option value="all">All Property Types</option>
           <option value="house">House</option>
@@ -141,7 +141,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <select
           value={filters.maxPrice < 10000000 ? String(filters.maxPrice) : "all"}
           onChange={(e) => onUpdateFilter("maxPrice", e.target.value === "all" ? 10000000 : Number(e.target.value))}
-          className="w-full bg-slate-50 text-slate-900 text-sm font-medium rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
         >
           <option value="all">Any Price</option>
           {filters.listingType === "rent" ? (
@@ -178,7 +178,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 "flex-1 min-w-[42px] py-1.5 text-xs font-bold rounded-lg border transition-all cursor-pointer",
                 filters.bedrooms === num
                   ? "bg-slate-900 text-white border-slate-900"
-                  : "border-slate-200 text-slate-700 hover:bg-slate-50"
+                  : "border-[#e5e3dd] bg-[#f8f7f4] text-slate-700 hover:bg-white"
               )}
             >
               {num === "any" ? "Any" : `${num}+`}
@@ -195,7 +195,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         <select
           value={filters.sortBy}
           onChange={(e) => onUpdateFilter("sortBy", e.target.value as SortOption)}
-          className="w-full bg-slate-50 text-slate-900 text-sm font-medium rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
         >
           <option value="newest">Newest Listed First</option>
           <option value="price-asc">Price: Low to High</option>
@@ -206,7 +206,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* 6. Desired Amenities */}
-      <div className="space-y-3 pt-2 border-t border-slate-100">
+      <div className="space-y-3 pt-2 border-t border-[#e5e3dd]">
         <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
           Amenities & Features
         </label>

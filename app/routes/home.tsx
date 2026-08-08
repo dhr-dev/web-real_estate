@@ -34,21 +34,13 @@ export function meta() {
 export default function HomePage() {
   const featuredProperties = PROPERTIES.filter((p) => p.featured).slice(0, 6);
   const recentProperties = PROPERTIES.slice(6, 12);
-  const saleCount = PROPERTIES.filter((p) => p.listingType === "sale").length;
   const rentCount = PROPERTIES.filter((p) => p.listingType === "rent").length;
 
-  const categories = [
-    { name: "Apartments", type: "apartment", count: PROPERTIES.filter((p) => p.propertyType === "apartment").length, icon: Building2 },
-    { name: "Family Houses", type: "house", count: PROPERTIES.filter((p) => p.propertyType === "house").length, icon: Home },
-    { name: "Townhouses", type: "townhouse", count: PROPERTIES.filter((p) => p.propertyType === "townhouse").length, icon: Building },
-    { name: "Rentals", listingType: "rent", count: rentCount, icon: KeyIcon },
-  ];
-
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-16 pb-16 bg-[#faf9f6]">
       {/* 1. PRODUCT HERO SECTION */}
       <section className="relative bg-slate-950 text-white pt-10 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Background Subtle Gradient & Pattern */}
+        {/* Background Subtle Image & Vignette */}
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000"
@@ -94,74 +86,76 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. CATEGORY SHORTCUTS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Link
-            to="/properties?propertyType=apartment"
-            className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-lg hover:border-slate-300 transition-all flex items-center gap-4 group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-              <Building2 className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
-                Apartments
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {PROPERTIES.filter((p) => p.propertyType === "apartment").length} listings
-              </p>
-            </div>
-          </Link>
+      {/* 2. CATEGORY SHORTCUTS (Tonal secondary section background #f3f2ee) */}
+      <section className="bg-[#f3f2ee] py-10 border-y border-[#e5e3dd]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <Link
+              to="/properties?propertyType=apartment"
+              className="bg-white rounded-2xl border border-[#e5e3dd] p-5 hover:shadow-md hover:border-[#d6d3cb] transition-all flex items-center gap-4 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-colors">
+                <Building2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
+                  Apartments
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {PROPERTIES.filter((p) => p.propertyType === "apartment").length} listings
+                </p>
+              </div>
+            </Link>
 
-          <Link
-            to="/properties?propertyType=house"
-            className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-lg hover:border-slate-300 transition-all flex items-center gap-4 group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-              <Home className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
-                Family Houses
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {PROPERTIES.filter((p) => p.propertyType === "house").length} listings
-              </p>
-            </div>
-          </Link>
+            <Link
+              to="/properties?propertyType=house"
+              className="bg-white rounded-2xl border border-[#e5e3dd] p-5 hover:shadow-md hover:border-[#d6d3cb] transition-all flex items-center gap-4 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-colors">
+                <Home className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
+                  Family Houses
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {PROPERTIES.filter((p) => p.propertyType === "house").length} listings
+                </p>
+              </div>
+            </Link>
 
-          <Link
-            to="/properties?propertyType=townhouse"
-            className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-lg hover:border-slate-300 transition-all flex items-center gap-4 group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-              <Building className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
-                Townhouses
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {PROPERTIES.filter((p) => p.propertyType === "townhouse").length} listings
-              </p>
-            </div>
-          </Link>
+            <Link
+              to="/properties?propertyType=townhouse"
+              className="bg-white rounded-2xl border border-[#e5e3dd] p-5 hover:shadow-md hover:border-[#d6d3cb] transition-all flex items-center gap-4 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-colors">
+                <Building className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
+                  Townhouses
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {PROPERTIES.filter((p) => p.propertyType === "townhouse").length} listings
+                </p>
+              </div>
+            </Link>
 
-          <Link
-            to="/properties?listingType=rent"
-            className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-lg hover:border-slate-300 transition-all flex items-center gap-4 group"
-          >
-            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-              <KeyIcon className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
-                Property Rentals
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">{rentCount} rentals</p>
-            </div>
-          </Link>
+            <Link
+              to="/properties?listingType=rent"
+              className="bg-white rounded-2xl border border-[#e5e3dd] p-5 hover:shadow-md hover:border-[#d6d3cb] transition-all flex items-center gap-4 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold shrink-0 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 transition-colors">
+                <KeyIcon className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm group-hover:text-amber-700 transition-colors">
+                  Property Rentals
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">{rentCount} rentals</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -169,7 +163,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
               Handpicked Selection
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 tracking-tight">
@@ -177,7 +171,7 @@ export default function HomePage() {
             </h2>
           </div>
           <Link to="/properties">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-[#e5e3dd] hover:bg-[#f8f7f4]">
               <span>View All Properties ({PROPERTIES.length})</span>
               <ArrowRight className="w-4 h-4 text-slate-500" />
             </Button>
@@ -217,37 +211,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. RECENTLY ADDED LISTINGS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
-              Fresh Inventory
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 tracking-tight">
-              Recently Added Homes
-            </h2>
+      {/* 5. RECENTLY ADDED LISTINGS (Tonal section #f3f2ee) */}
+      <section className="bg-[#f3f2ee] py-14 border-y border-[#e5e3dd]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+                Fresh Inventory
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5 tracking-tight">
+                Recently Added Homes
+              </h2>
+            </div>
+            <Link to="/properties?sortBy=newest">
+              <Button variant="outline" size="sm" className="bg-white border-[#e5e3dd] hover:bg-[#f8f7f4]">
+                <span>See Newest First</span>
+                <ArrowRight className="w-4 h-4 text-slate-500" />
+              </Button>
+            </Link>
           </div>
-          <Link to="/properties?sortBy=newest">
-            <Button variant="outline" size="sm">
-              <span>See Newest First</span>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
-            </Button>
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentProperties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
-          ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recentProperties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* 6. PLATFORM CAPABILITIES STRIP */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-8 sm:p-10 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-white rounded-3xl border border-[#e5e3dd] p-8 sm:p-10 shadow-2xs grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold mb-3">
               <Filter className="w-5 h-5" />
             </div>
             <h3 className="text-lg font-bold text-slate-900 tracking-tight">Interactive Filtering</h3>
@@ -257,7 +253,7 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold mb-3">
               <Heart className="w-5 h-5" />
             </div>
             <h3 className="text-lg font-bold text-slate-900 tracking-tight">Saved Properties Wishlist</h3>
@@ -267,7 +263,7 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] text-amber-800 border border-[#e5e3dd] flex items-center justify-center font-bold mb-3">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <h3 className="text-lg font-bold text-slate-900 tracking-tight">Direct Viewing Enquiries</h3>

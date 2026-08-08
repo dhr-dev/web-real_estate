@@ -22,14 +22,14 @@ export const AgentCard: React.FC<AgentCardProps> = ({
   if (variant === "sidebar") {
     return (
       <>
-        <div className={cn("bg-white rounded-2xl border border-slate-200 p-6 space-y-5 shadow-xs", className)}>
+        <div className={cn("bg-white rounded-2xl border border-[#e5e3dd] p-6 space-y-5 shadow-2xs", className)}>
           {/* Agent Header */}
           <div className="flex items-center gap-4">
             <Link to={`/agents/${agent.id}`} className="relative shrink-0">
               <img
                 src={agent.avatar}
                 alt={agent.name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-slate-100 shadow-sm"
+                className="w-16 h-16 rounded-full object-cover border-2 border-[#e5e3dd] shadow-2xs"
               />
               <span className="absolute bottom-0 right-0 w-4 h-4 bg-teal-500 border-2 border-white rounded-full" title="Verified Haven Partner" />
             </Link>
@@ -45,15 +45,15 @@ export const AgentCard: React.FC<AgentCardProps> = ({
           </div>
 
           {/* Metrics */}
-          <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100 text-center">
-            <div className="bg-slate-50 p-2.5 rounded-xl">
+          <div className="grid grid-cols-2 gap-2 pt-3 border-t border-[#e5e3dd] text-center">
+            <div className="bg-[#f8f7f4] border border-[#e5e3dd] p-2.5 rounded-xl">
               <div className="flex items-center justify-center gap-1 text-amber-700 font-bold text-sm">
                 <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                 <span>{agent.rating}</span>
               </div>
               <span className="text-[10px] text-slate-500 font-medium">({agent.reviewsCount} Reviews)</span>
             </div>
-            <div className="bg-slate-50 p-2.5 rounded-xl">
+            <div className="bg-[#f8f7f4] border border-[#e5e3dd] p-2.5 rounded-xl">
               <span className="block font-bold text-slate-900 text-sm">{agent.propertiesCount}</span>
               <span className="text-[10px] text-slate-500 font-medium">Active Listings</span>
             </div>

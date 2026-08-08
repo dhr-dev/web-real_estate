@@ -157,44 +157,44 @@ export default function PropertyDetailPage() {
       <PropertyGallery images={property.images} title={property.title} />
 
       {/* Quick Specs Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+      <div className="bg-white rounded-2xl border border-[#e5e3dd] p-6 shadow-2xs grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e3dd]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] border border-[#e5e3dd] text-amber-800 flex items-center justify-center shrink-0">
             <Bed className="w-5 h-5" />
           </div>
           <div>
             <span className="text-xs text-slate-500 font-medium block">Bedrooms</span>
-            <span className="font-serif font-bold text-lg text-slate-900">{property.bedrooms} Beds</span>
+            <span className="font-extrabold text-lg text-slate-900 tracking-tight">{property.bedrooms} Beds</span>
           </div>
         </div>
 
         <div className="flex items-center gap-3 pt-4 sm:pt-0 sm:pl-6">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] border border-[#e5e3dd] text-amber-800 flex items-center justify-center shrink-0">
             <Bath className="w-5 h-5" />
           </div>
           <div>
             <span className="text-xs text-slate-500 font-medium block">Bathrooms</span>
-            <span className="font-serif font-bold text-lg text-slate-900">{property.bathrooms} Baths</span>
+            <span className="font-extrabold text-lg text-slate-900 tracking-tight">{property.bathrooms} Baths</span>
           </div>
         </div>
 
         <div className="flex items-center gap-3 pt-4 sm:pt-0 sm:pl-6">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] border border-[#e5e3dd] text-amber-800 flex items-center justify-center shrink-0">
             <Maximize className="w-5 h-5" />
           </div>
           <div>
             <span className="text-xs text-slate-500 font-medium block">Internal Area</span>
-            <span className="font-serif font-bold text-lg text-slate-900">{area.sqFt}</span>
+            <span className="font-extrabold text-lg text-slate-900 tracking-tight">{area.sqFt}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-3 pt-4 sm:pt-0 sm:pl-6">
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#f8f7f4] border border-[#e5e3dd] text-amber-800 flex items-center justify-center shrink-0">
             <Home className="w-5 h-5" />
           </div>
           <div>
             <span className="text-xs text-slate-500 font-medium block">Tenure</span>
-            <span className="font-serif font-bold text-lg text-slate-900">{property.tenure || "Freehold"}</span>
+            <span className="font-extrabold text-lg text-slate-900 tracking-tight">{property.tenure || "Freehold"}</span>
           </div>
         </div>
       </div>
@@ -233,7 +233,7 @@ export default function PropertyDetailPage() {
               {property.features.map((feature) => (
                 <span
                   key={feature}
-                  className="bg-white border border-slate-200/80 text-slate-800 text-xs font-semibold px-3.5 py-2 rounded-xl shadow-2xs"
+                  className="bg-white border border-[#e5e3dd] text-slate-800 text-xs font-semibold px-3.5 py-2 rounded-xl shadow-2xs"
                 >
                   ✓ {feature}
                 </span>

@@ -55,14 +55,14 @@ export default function AgentDetailPage() {
       </nav>
 
       {/* Agent Header Hero Card */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div className="bg-white rounded-3xl border border-[#e5e3dd] p-8 sm:p-10 shadow-2xs grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Avatar Image */}
         <div className="lg:col-span-4 flex justify-center">
           <div className="relative">
             <img
               src={agent.avatar}
               alt={agent.name}
-              className="w-48 h-48 sm:w-56 sm:h-56 rounded-full object-cover border-4 border-slate-100 shadow-lg"
+              className="w-48 h-48 sm:w-56 sm:h-56 rounded-full object-cover border-4 border-[#e5e3dd] shadow-md"
             />
             <span className="absolute bottom-2 right-2 bg-teal-600 text-white p-2 rounded-full shadow-md" title="Verified Haven Partner">
               <ShieldCheck className="w-6 h-6" />
@@ -77,7 +77,7 @@ export default function AgentDetailPage() {
               <span className="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">
                 {agent.agency}
               </span>
-              <span className="flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+              <span className="flex items-center gap-1 text-xs font-bold text-amber-800 bg-[#f8f7f4] px-2.5 py-1 rounded-full border border-[#e5e3dd]">
                 <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                 {agent.rating} ({agent.reviewsCount} Client Reviews)
               </span>
@@ -95,14 +95,14 @@ export default function AgentDetailPage() {
 
           <div className="flex flex-wrap gap-2 pt-1">
             {agent.specialization.map((spec) => (
-              <span key={spec} className="bg-slate-100 text-slate-800 text-xs font-semibold px-3 py-1 rounded-lg">
+              <span key={spec} className="bg-[#f8f7f4] text-slate-800 border border-[#e5e3dd] text-xs font-semibold px-3 py-1 rounded-lg">
                 {spec}
               </span>
             ))}
           </div>
 
           {/* Contact Bar */}
-          <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+          <div className="pt-4 border-t border-[#e5e3dd] flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-600">
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-amber-600" /> {agent.location}

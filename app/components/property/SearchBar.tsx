@@ -50,21 +50,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div
       className={cn(
-        "bg-white rounded-2xl shadow-xl border border-slate-200/90 p-4 sm:p-5 transition-all",
+        "bg-white rounded-2xl shadow-xl border border-[#e5e3dd] p-4 sm:p-5 transition-all",
         variant === "hero" ? "ring-1 ring-slate-900/5 shadow-2xl" : "",
         className
       )}
     >
       {/* Listing Type Switcher (Buy / Rent) */}
-      <div className="flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
+      <div className="flex items-center gap-2 pb-3 border-b border-[#e5e3dd] mb-4">
         <button
           type="button"
           onClick={() => setListingType("sale")}
           className={cn(
             "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
             listingType === "sale"
-              ? "bg-slate-900 text-white shadow-xs"
-              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              ? "bg-slate-900 text-white shadow-2xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-[#f8f7f4]"
           )}
         >
           Buy Properties
@@ -75,8 +75,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           className={cn(
             "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer",
             listingType === "rent"
-              ? "bg-slate-900 text-white shadow-xs"
-              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              ? "bg-slate-900 text-white shadow-2xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-[#f8f7f4]"
           )}
         >
           Rent Properties
@@ -96,7 +96,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               <select
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
               >
                 <option value="all">All UK & Europe</option>
                 <option value="London">London, UK</option>
@@ -119,7 +119,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               <select
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value)}
-                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
               >
                 <option value="all">All Types</option>
                 <option value="apartment">Apartments</option>
@@ -141,7 +141,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               <select
                 value={bedrooms}
                 onChange={(e) => setBedrooms(e.target.value)}
-                className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
               >
                 <option value="any">Any</option>
                 <option value="1">1+ Bed</option>
@@ -160,7 +160,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             <select
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-              className="w-full bg-slate-50 hover:bg-slate-100/80 text-slate-900 text-sm font-semibold rounded-xl px-3 py-2.5 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
+              className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl px-3 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
             >
               <option value="all">Any Price</option>
               {listingType === "sale" ? (
@@ -198,7 +198,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             placeholder="Search by area, postcode, or keyword (e.g. Garden, Balcony, Richmond...)"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-50/70 hover:bg-slate-50 text-slate-800 text-xs rounded-xl px-3.5 py-2 border border-slate-200/80 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors placeholder:text-slate-400"
+            className="w-full bg-[#f8f7f4] hover:bg-white text-slate-800 text-xs rounded-xl px-3.5 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors placeholder:text-slate-400"
           />
         </div>
       </form>
