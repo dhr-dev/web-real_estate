@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Production & Build outputs
+build/
+.react-router/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+*.log
