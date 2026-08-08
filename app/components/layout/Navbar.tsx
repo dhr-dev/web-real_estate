@@ -7,23 +7,36 @@ import { EnquiryModal } from "../modals/EnquiryModal";
 import { Button } from "../ui/Button";
 
 export const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverDarkSection, setIsOverDarkSection] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
   const { savedCount } = useSavedProperties();
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 15) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+    const detectSectionTheme = () => {
+      const darkSections = document.querySelectorAll('[data-theme="dark"]');
+      const navbarY = 50;
+
+      let isOverDark = false;
+      darkSections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= navbarY && rect.bottom >= navbarY) {
+          isOverDark = true;
+        }
+      });
+
+      setIsOverDarkSection(isOverDark);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    detectSectionTheme();
+    window.addEventListener("scroll", detectSectionTheme, { passive: true });
+    window.addEventListener("resize", detectSectionTheme, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", detectSectionTheme);
+      window.removeEventListener("resize", detectSectionTheme);
+    };
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -44,7 +57,6 @@ export const Navbar: React.FC = () => {
     const [path, query] = href.split("?");
     if (location.pathname !== path) return false;
     if (!query) {
-      // If browsing /properties without listingType filter
       if (path === "/properties" && location.search.includes("listingType=")) {
         return false;
       }
@@ -55,32 +67,57 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-40 w-full transition-all duration-300 border-b border-[#e5e3dd]",
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-2xs py-3"
-            : "bg-[#faf9f6]/95 backdrop-blur-sm py-4"
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Prominent Brand Wordmark & Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black tracking-tighter text-xl shadow-xs group-hover:bg-amber-600 transition-colors">
+      {/* Dynamic Section-Aware Floating Centered Capsule Header */}
+      <header className="sticky top-3 sm:top-4 z-50 w-full px-3 sm:px-6 lg:px-8 pointer-events-none">
+        <div
+          className={cn(
+            "pointer-events-auto max-w-6xl mx-auto rounded-full border transition-all duration-500 ease-in-out px-4 py-2 sm:py-2.5 flex items-center justify-between backdrop-blur-xl",
+            isOverDarkSection
+              ? "bg-white/80 border-white/40 text-slate-900 shadow-xl shadow-slate-950/15"
+              : "bg-slate-950/85 border-slate-800 text-white shadow-2xl shadow-slate-950/30"
+          )}
+        >
+          {/* Brand Logo & Wordmark */}
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0 pl-1">
+            <div
+              className={cn(
+                "w-9 h-9 rounded-full flex items-center justify-center font-black tracking-tighter text-lg transition-all duration-500 ease-in-out",
+                isOverDarkSection
+                  ? "bg-slate-900 text-white group-hover:bg-amber-600 shadow-xs"
+                  : "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+              )}
+            >
               H
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-slate-700 transition-colors">
+              <span
+                className={cn(
+                  "text-xl font-black tracking-tight leading-none transition-colors duration-500 ease-in-out",
+                  isOverDarkSection ? "text-slate-900 group-hover:text-amber-700" : "text-white group-hover:text-amber-300"
+                )}
+              >
                 Haven
               </span>
-              <span className="text-[10px] tracking-widest text-slate-400 uppercase font-bold -mt-1">
+              <span
+                className={cn(
+                  "text-[9px] tracking-widest uppercase font-extrabold mt-0.5 transition-colors duration-500 ease-in-out",
+                  isOverDarkSection ? "text-slate-500" : "text-slate-400"
+                )}
+              >
                 Real Estate
               </span>
             </div>
           </Link>
 
-          {/* Core Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1.5 bg-[#f3f2ee] p-1.5 rounded-2xl border border-[#e5e3dd]">
+          {/* Centered Recessed "Dip" Desktop Navigation Track */}
+          <nav
+            className={cn(
+              "hidden md:flex items-center gap-1 p-1 rounded-full border transition-all duration-500 ease-in-out",
+              isOverDarkSection
+                ? "bg-slate-100/90 border-slate-200/80 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.06)]"
+                : "bg-white/10 border-white/15 shadow-[inset_0_1.5px_3px_rgba(0,0,0,0.3)]"
+            )}
+          >
             {navLinks.map((link) => {
               const active = isLinkActive(link.href, link.isExact);
               return (
@@ -88,15 +125,24 @@ export const Navbar: React.FC = () => {
                   key={link.label}
                   to={link.href}
                   className={cn(
-                    "px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5",
+                    "px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ease-in-out flex items-center gap-1.5 relative",
                     active
-                      ? "bg-white text-slate-900 shadow-2xs border border-[#e5e3dd]"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+                      ? isOverDarkSection
+                        ? "bg-slate-950 text-white shadow-xs font-extrabold"
+                        : "bg-white text-slate-950 shadow-xs font-extrabold"
+                      : isOverDarkSection
+                      ? "text-slate-700 hover:text-slate-950 hover:bg-white/80"
+                      : "text-slate-200 hover:text-white hover:bg-white/10"
                   )}
                 >
                   <span>{link.label}</span>
                   {typeof link.badge === "number" && link.badge > 0 && (
-                    <span className="bg-amber-600 text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">
+                    <span
+                      className={cn(
+                        "text-[10px] font-extrabold px-1.5 py-0.2 rounded-full transition-colors duration-300",
+                        active ? "bg-amber-400 text-slate-950" : "bg-amber-600 text-white"
+                      )}
+                    >
                       {link.badge}
                     </span>
                   )}
@@ -105,38 +151,57 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action Icons & Primary CTA */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Wishlist Icon Button */}
-            <Link
-              to="/saved"
-              className="relative p-2.5 text-slate-700 hover:text-slate-900 hover:bg-[#f3f2ee] rounded-xl border border-[#e5e3dd] transition-colors flex items-center justify-center bg-white"
-              aria-label="View saved properties"
-              title="Saved Shortlist"
-            >
-              <Heart className="w-4 h-4 text-slate-700" />
-              {savedCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-amber-600 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-2xs">
-                  {savedCount}
-                </span>
+          {/* Right Action Controls */}
+          <div className="flex items-center gap-2 sm:gap-3 pr-1">
+            {/* Wishlist Button */}
+            <div
+              className={cn(
+                "p-0.5 rounded-full transition-all duration-500 ease-in-out",
+                isOverDarkSection
+                  ? "bg-slate-100/90 border border-slate-200/80 shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]"
+                  : "bg-white/10 border border-white/15 shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]"
               )}
-            </Link>
+            >
+              <Link
+                to="/saved"
+                className={cn(
+                  "relative p-2 rounded-full border transition-all duration-300 ease-in-out flex items-center justify-center",
+                  isOverDarkSection
+                    ? "bg-white border-slate-200 text-slate-900 hover:bg-slate-50 shadow-2xs"
+                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                )}
+                aria-label="View saved properties"
+                title="Saved Shortlist"
+              >
+                <Heart className={cn("w-4 h-4 transition-colors duration-300", isOverDarkSection ? "text-slate-700" : "text-white")} />
+                {savedCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                    {savedCount}
+                  </span>
+                )}
+              </Link>
+            </div>
 
-            {/* Primary Action CTA */}
+            {/* Enquire Now CTA */}
             <Button
-              variant="dark"
+              variant={isOverDarkSection ? "dark" : "secondary"}
               size="sm"
-              className="hidden sm:inline-flex font-bold"
+              className="hidden sm:inline-flex font-bold rounded-full px-4 shadow-xs transition-all duration-500 active:scale-95"
               onClick={() => setIsEnquiryModalOpen(true)}
             >
               <PhoneCall className="w-3.5 h-3.5 text-amber-400" />
-              <span>Enquire Now</span>
+              <span>Enquire</span>
             </Button>
 
             {/* Mobile Menu Trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-700 hover:text-slate-900 hover:bg-[#f3f2ee] rounded-xl border border-[#e5e3dd]"
+              className={cn(
+                "md:hidden p-2 rounded-full border transition-colors duration-300",
+                isOverDarkSection
+                  ? "bg-slate-100 border-slate-200 text-slate-900"
+                  : "bg-white/10 border-white/20 text-white"
+              )}
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -144,9 +209,16 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Sheet */}
+        {/* Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-b border-[#e5e3dd] bg-[#faf9f6] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
+          <div
+            className={cn(
+              "pointer-events-auto md:hidden mt-2 max-w-6xl mx-auto rounded-3xl border p-4 space-y-3 shadow-2xl transition-all duration-500 ease-in-out animate-in slide-in-from-top-2",
+              isOverDarkSection
+                ? "bg-white/95 backdrop-blur-2xl border-slate-200 text-slate-900"
+                : "bg-slate-950/95 backdrop-blur-2xl border-slate-800 text-white"
+            )}
+          >
             <div className="space-y-1 py-1">
               {navLinks.map((link) => {
                 const active = isLinkActive(link.href, link.isExact);
@@ -155,15 +227,19 @@ export const Navbar: React.FC = () => {
                     key={link.label}
                     to={link.href}
                     className={cn(
-                      "flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors",
+                      "flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-2xl transition-colors duration-300",
                       active
-                        ? "bg-white text-slate-900 border border-[#e5e3dd] font-bold"
-                        : "text-slate-700 hover:bg-[#f3f2ee]"
+                        ? isOverDarkSection
+                          ? "bg-slate-950 text-white font-black"
+                          : "bg-white text-slate-950 font-black"
+                        : isOverDarkSection
+                        ? "text-slate-800 hover:bg-slate-100"
+                        : "text-slate-200 hover:bg-white/10"
                     )}
                   >
                     <span>{link.label}</span>
                     {typeof link.badge === "number" && link.badge > 0 && (
-                      <span className="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      <span className="bg-amber-500 text-slate-950 text-xs font-bold px-2 py-0.5 rounded-full">
                         {link.badge}
                       </span>
                     )}
@@ -173,9 +249,9 @@ export const Navbar: React.FC = () => {
             </div>
             <div className="pt-2">
               <Button
-                variant="dark"
+                variant={isOverDarkSection ? "dark" : "secondary"}
                 size="md"
-                className="w-full justify-center font-bold"
+                className="w-full justify-center font-bold rounded-2xl transition-all duration-500"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setIsEnquiryModalOpen(true);

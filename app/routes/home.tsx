@@ -39,7 +39,7 @@ export default function HomePage() {
   return (
     <div className="space-y-16 pb-16 bg-[#faf9f6]">
       {/* 1. PRODUCT HERO SECTION */}
-      <section className="relative bg-slate-950 text-white pt-10 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section data-theme="dark" className="relative bg-slate-950 text-white -mt-[72px] pt-28 sm:pt-36 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background Subtle Image & Vignette */}
         <div className="absolute inset-0 z-0">
           <img
@@ -186,7 +186,7 @@ export default function HomePage() {
       </section>
 
       {/* 4. POPULAR LOCATIONS SECTION */}
-      <section className="bg-slate-900 text-white py-14">
+      <section data-theme="dark" className="bg-slate-900 text-white py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
@@ -276,7 +276,7 @@ export default function HomePage() {
 
       {/* 7. BOTTOM CALL TO ACTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 text-white rounded-3xl p-10 sm:p-12 text-center space-y-5 relative overflow-hidden border border-slate-800 shadow-xl">
+        <div data-theme="dark" className="bg-slate-900 text-white rounded-3xl p-10 sm:p-12 text-center space-y-5 relative overflow-hidden border border-slate-800 shadow-xl">
           <div className="relative z-10 max-w-xl mx-auto space-y-4">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Start browsing properties now
