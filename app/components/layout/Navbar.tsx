@@ -15,7 +15,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 15) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -30,134 +30,152 @@ export const Navbar: React.FC = () => {
   }, [location.pathname, location.search]);
 
   const navLinks = [
+    { label: "Home", href: "/", isExact: true },
     { label: "Buy", href: "/properties?listingType=sale" },
     { label: "Rent", href: "/properties?listingType=rent" },
-    { label: "Search All", href: "/properties" },
-    { label: "Editorial", href: "/about" },
+    { label: "Properties", href: "/properties" },
+    { label: "Saved", href: "/saved", badge: savedCount },
   ];
+
+  const isLinkActive = (href: string, isExact?: boolean) => {
+    if (isExact) {
+      return location.pathname === "/" && location.search === "";
+    }
+    const [path, query] = href.split("?");
+    if (location.pathname !== path) return false;
+    if (!query) {
+      // If browsing /properties without listingType filter
+      if (path === "/properties" && location.search.includes("listingType=")) {
+        return false;
+      }
+      return true;
+    }
+    return location.search.includes(query);
+  };
 
   return (
     <>
       <header
         className={cn(
-          "sticky top-0 z-40 w-full transition-all duration-300",
+          "sticky top-0 z-40 w-full transition-all duration-300 border-b border-[#e5e3dd]",
           isScrolled
-            ? "bg-white/90 backdrop-blur-md border-b border-[#e5e3dd] shadow-2xs py-3.5"
-            : "bg-[#faf9f6] border-b border-[#e5e3dd] py-4"
+            ? "bg-white/95 backdrop-blur-md shadow-2xs py-3"
+            : "bg-[#faf9f6]/95 backdrop-blur-sm py-4"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Wordmark */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold tracking-tighter text-lg shadow-sm group-hover:bg-amber-600 transition-colors">
+          {/* Prominent Brand Wordmark & Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black tracking-tighter text-xl shadow-xs group-hover:bg-amber-600 transition-colors">
               H
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-black tracking-tight text-slate-900 group-hover:text-slate-700 transition-colors">
+              <span className="text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-slate-700 transition-colors">
                 Haven
               </span>
-              <span className="text-[10px] tracking-widest text-slate-400 uppercase font-semibold -mt-1">
+              <span className="text-[10px] tracking-widest text-slate-400 uppercase font-bold -mt-1">
                 Real Estate
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Core Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1.5 bg-[#f3f2ee] p-1.5 rounded-2xl border border-[#e5e3dd]">
             {navLinks.map((link) => {
-              const isActive =
-                location.pathname === link.href.split("?")[0] &&
-                (!link.href.includes("?") || location.search.includes(link.href.split("?")[1]));
+              const active = isLinkActive(link.href, link.isExact);
               return (
                 <Link
                   key={link.label}
                   to={link.href}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-slate-900 relative py-1",
-                    isActive ? "text-slate-900 font-semibold" : "text-slate-600"
+                    "px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5",
+                    active
+                      ? "bg-white text-slate-900 shadow-2xs border border-[#e5e3dd]"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
                   )}
                 >
-                  {link.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 rounded-full" />
+                  <span>{link.label}</span>
+                  {typeof link.badge === "number" && link.badge > 0 && (
+                    <span className="bg-amber-600 text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">
+                      {link.badge}
+                    </span>
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Action Icons & Buttons */}
+          {/* Right Action Icons & Primary CTA */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {/* Saved Wishlist Button */}
+            {/* Wishlist Icon Button */}
             <Link
               to="/saved"
-              className="relative p-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center"
+              className="relative p-2.5 text-slate-700 hover:text-slate-900 hover:bg-[#f3f2ee] rounded-xl border border-[#e5e3dd] transition-colors flex items-center justify-center bg-white"
               aria-label="View saved properties"
-              title="Saved Properties"
+              title="Saved Shortlist"
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="w-4 h-4 text-slate-700" />
               {savedCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-xs border-2 border-white animate-in zoom-in-50">
+                <span className="absolute -top-1.5 -right-1.5 bg-amber-600 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-2xs">
                   {savedCount}
                 </span>
               )}
             </Link>
 
-            {/* Quick Enquiry CTA */}
+            {/* Primary Action CTA */}
             <Button
               variant="dark"
               size="sm"
-              className="hidden sm:inline-flex"
+              className="hidden sm:inline-flex font-bold"
               onClick={() => setIsEnquiryModalOpen(true)}
             >
-              <PhoneCall className="w-4 h-4 text-amber-400" />
+              <PhoneCall className="w-3.5 h-3.5 text-amber-400" />
               <span>Enquire Now</span>
             </Button>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile Menu Trigger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
+              className="md:hidden p-2 text-slate-700 hover:text-slate-900 hover:bg-[#f3f2ee] rounded-xl border border-[#e5e3dd]"
               aria-label="Toggle mobile menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu dropdown */}
+        {/* Mobile Navigation Sheet */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
-            <div className="space-y-1 py-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  className="block px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50 rounded-lg"
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                to="/saved"
-                className="flex items-center justify-between px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-amber-600" />
-                  <span>Saved Properties</span>
-                </div>
-                {savedCount > 0 && (
-                  <span className="bg-slate-900 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                    {savedCount}
-                  </span>
-                )}
-              </Link>
+          <div className="md:hidden border-b border-[#e5e3dd] bg-[#faf9f6] px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
+            <div className="space-y-1 py-1">
+              {navLinks.map((link) => {
+                const active = isLinkActive(link.href, link.isExact);
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={cn(
+                      "flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors",
+                      active
+                        ? "bg-white text-slate-900 border border-[#e5e3dd] font-bold"
+                        : "text-slate-700 hover:bg-[#f3f2ee]"
+                    )}
+                  >
+                    <span>{link.label}</span>
+                    {typeof link.badge === "number" && link.badge > 0 && (
+                      <span className="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        {link.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
             <div className="pt-2">
               <Button
                 variant="dark"
                 size="md"
-                className="w-full justify-center"
+                className="w-full justify-center font-bold"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setIsEnquiryModalOpen(true);
