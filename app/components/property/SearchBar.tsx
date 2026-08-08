@@ -1,9 +1,11 @@
-import { Building2, Home, MapPin, Search, SlidersHorizontal, PoundSterling, Bed } from "lucide-react";
+import { Bed, Building2, Home, MapPin, Search, SlidersHorizontal, Tag } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { ACTIVE_REGION_CONFIG } from "../../config/dataRegionConfig";
 import { ListingType, PropertyType } from "../../types/property";
 import { cn } from "../../utils/cn";
 import { Button } from "../ui/Button";
+import { CustomSelect } from "../ui/CustomSelect";
 
 export interface SearchBarProps {
   initialListingType?: ListingType;
@@ -47,6 +49,51 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     navigate(`/properties?${params.toString()}`);
   };
 
+  const cityOptions = [
+    { value: "all", label: `All ${ACTIVE_REGION_CONFIG.name}` },
+    ...ACTIVE_REGION_CONFIG.popularCities.map((c) => ({
+      value: c,
+      label: `${c}, ${ACTIVE_REGION_CONFIG.code}`,
+    })),
+  ];
+
+  const propertyTypeOptions = [
+    { value: "all", label: "All Property Types" },
+    { value: "apartment", label: "Apartments" },
+    { value: "house", label: "Houses" },
+    { value: "townhouse", label: "Townhouses" },
+    { value: "penthouse", label: "Penthouses" },
+    { value: "villa", label: "Villas" },
+  ];
+
+  const bedroomOptions = [
+    { value: "any", label: "Any Bedrooms" },
+    { value: "1", label: "1+ Bedroom" },
+    { value: "2", label: "2+ Bedrooms" },
+    { value: "3", label: "3+ Bedrooms" },
+    { value: "4", label: "4+ Bedrooms" },
+  ];
+
+  const maxPriceOptions =
+    listingType === "sale"
+      ? [
+          { value: "all", label: "Any Price" },
+          { value: "350000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}350,000` },
+          { value: "500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}500,000` },
+          { value: "750000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}750,000` },
+          { value: "1000000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,000,000` },
+          { value: "1500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,500,000` },
+          { value: "2500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}2,500,000` },
+        ]
+      : [
+          { value: "all", label: "Any Price" },
+          { value: "1500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,500 / mo` },
+          { value: "2500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}2,500 / mo` },
+          { value: "3500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}3,500 / mo` },
+          { value: "5000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}5,000 / mo` },
+          { value: "8500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}8,500 / mo` },
+        ];
+
   return (
     <div
       className={cn(
@@ -88,118 +135,74 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
           {/* Location */}
           <div className="lg:col-span-3">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Location
-            </label>
-            <div className="relative flex items-center">
-              <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
-              >
-                <option value="all">All UK & Europe</option>
-                <option value="London">London, UK</option>
-                <option value="Manchester">Manchester, UK</option>
-                <option value="Edinburgh">Edinburgh, UK</option>
-                <option value="Bristol">Bristol, UK</option>
-                <option value="Amsterdam">Amsterdam, NL</option>
-                <option value="Lisbon">Lisbon, PT</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Location"
+              icon={MapPin}
+              options={cityOptions}
+              value={city}
+              onChange={setCity}
+            />
           </div>
 
           {/* Property Type */}
           <div className="lg:col-span-3">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Property Type
-            </label>
-            <div className="relative flex items-center">
-              <Home className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
-              >
-                <option value="all">All Types</option>
-                <option value="apartment">Apartments</option>
-                <option value="house">Houses</option>
-                <option value="townhouse">Townhouses</option>
-                <option value="penthouse">Penthouses</option>
-                <option value="villa">Villas</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Property Type"
+              icon={Home}
+              options={propertyTypeOptions}
+              value={propertyType}
+              onChange={setPropertyType}
+            />
           </div>
 
           {/* Bedrooms */}
           <div className="lg:col-span-2">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Bedrooms
-            </label>
-            <div className="relative flex items-center">
-              <Bed className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
-              <select
-                value={bedrooms}
-                onChange={(e) => setBedrooms(e.target.value)}
-                className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
-              >
-                <option value="any">Any</option>
-                <option value="1">1+ Bed</option>
-                <option value="2">2+ Beds</option>
-                <option value="3">3+ Beds</option>
-                <option value="4">4+ Beds</option>
-              </select>
-            </div>
+            <CustomSelect
+              label="Bedrooms"
+              icon={Bed}
+              options={bedroomOptions}
+              value={bedrooms}
+              onChange={setBedrooms}
+            />
           </div>
 
           {/* Max Price */}
           <div className="lg:col-span-2">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Max Price
-            </label>
-            <select
+            <CustomSelect
+              label="Max Price"
+              icon={Tag}
+              options={maxPriceOptions}
               value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-              className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-sm font-semibold rounded-xl px-3 py-2.5 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors cursor-pointer"
-            >
-              <option value="all">Any Price</option>
-              {listingType === "sale" ? (
-                <>
-                  <option value="350000">Up to £350,000</option>
-                  <option value="500000">Up to £500,000</option>
-                  <option value="750000">Up to £750,000</option>
-                  <option value="1000000">Up to £1,000,000</option>
-                  <option value="1500000">Up to £1,500,000</option>
-                </>
-              ) : (
-                <>
-                  <option value="1500">Up to £1,500 / mo</option>
-                  <option value="2000">Up to £2,000 / mo</option>
-                  <option value="2500">Up to £2,500 / mo</option>
-                  <option value="3500">Up to £3,500 / mo</option>
-                </>
-              )}
-            </select>
+              onChange={setMaxPrice}
+            />
           </div>
 
           {/* Search Button */}
-          <div className="lg:col-span-2 pt-1 lg:pt-5">
-            <Button type="submit" variant="primary" size="md" className="w-full h-[42px] font-bold shadow-md">
-              <Search className="w-4 h-4" />
+          <div className="lg:col-span-2 sm:self-end">
+            <Button
+              type="submit"
+              variant="dark"
+              size="md"
+              className="w-full justify-center font-bold rounded-xl h-[42px]"
+            >
+              <Search className="w-4 h-4 text-amber-400" />
               <span>Search</span>
             </Button>
           </div>
         </div>
 
-        {/* Search Keyword Option */}
+        {/* Text Keyword Search Input */}
         <div className="pt-2">
-          <input
-            type="text"
-            placeholder="Search by area, postcode, or keyword (e.g. Garden, Balcony, Richmond...)"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#f8f7f4] hover:bg-white text-slate-800 text-xs rounded-xl px-3.5 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors placeholder:text-slate-400"
-          />
+          <div className="relative flex items-center">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by keyword, address, feature (e.g. 'terrace', 'sea view', 'pool')..."
+              className="w-full bg-[#f8f7f4] hover:bg-white text-slate-900 text-xs font-semibold rounded-xl pl-10 pr-4 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all placeholder:text-slate-400 placeholder:font-normal"
+            />
+          </div>
         </div>
       </form>
     </div>

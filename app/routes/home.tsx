@@ -18,6 +18,8 @@ import { LocationCard } from "../components/location/LocationCard";
 import { PropertyCard } from "../components/property/PropertyCard";
 import { SearchBar } from "../components/property/SearchBar";
 import { Button } from "../components/ui/Button";
+import { ACTIVE_REGION_CONFIG } from "../config/dataRegionConfig";
+import { AGENTS } from "../data/agents";
 import { LOCATIONS } from "../data/locations";
 import { PROPERTIES } from "../data/properties";
 
@@ -58,11 +60,11 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-            Find your next home in the <span className="text-amber-300">UK & Europe</span>
+            Find your next home in <span className="text-amber-300">{ACTIVE_REGION_CONFIG.name}</span>
           </h1>
 
           <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto font-normal leading-relaxed">
-            Search thousands of verified properties for sale and rent across London, Manchester, Edinburgh, Amsterdam, and Lisbon.
+            Search verified properties for sale and rent across {ACTIVE_REGION_CONFIG.popularCities.join(", ")}.
           </p>
 
           {/* Prominent Search Component */}
@@ -73,7 +75,7 @@ export default function HomePage() {
           {/* Quick Location Shortcuts */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-400">
             <span className="font-semibold text-slate-300">Popular Cities:</span>
-            {["London", "Manchester", "Edinburgh", "Amsterdam", "Lisbon"].map((city) => (
+            {ACTIVE_REGION_CONFIG.popularCities.map((city) => (
               <Link
                 key={city}
                 to={`/properties?city=${city}`}

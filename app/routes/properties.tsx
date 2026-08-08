@@ -1,10 +1,12 @@
 import { Filter, LayoutGrid, ListFilter, SlidersHorizontal, X } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
+import { ACTIVE_REGION_CONFIG } from "../config/dataRegionConfig";
 import { FilterPanel } from "../components/property/FilterPanel";
 import { PropertyGrid } from "../components/property/PropertyGrid";
 import { SearchBar } from "../components/property/SearchBar";
 import { Button } from "../components/ui/Button";
+import { CustomSelect } from "../components/ui/CustomSelect";
 import { PROPERTIES } from "../data/properties";
 import { usePropertyFilter } from "../hooks/usePropertyFilter";
 import { ListingType, PropertyType } from "../types/property";
@@ -88,6 +90,21 @@ export default function PropertiesPage() {
 
         {/* Action Controls */}
         <div className="flex items-center gap-3">
+          {/* Sorting Custom Select */}
+          <div className="w-48">
+            <CustomSelect
+              size="sm"
+              options={[
+                { value: "featured", label: "Sort: Featured" },
+                { value: "price-asc", label: `Price: Low to High (${ACTIVE_REGION_CONFIG.currencySymbol})` },
+                { value: "price-desc", label: `Price: High to Low (${ACTIVE_REGION_CONFIG.currencySymbol})` },
+                { value: "newest", label: "Newest First" },
+              ]}
+              value={filters.sortBy}
+              onChange={(val) => updateFilter("sortBy", val as any)}
+            />
+          </div>
+
           {/* Mobile Filter Button */}
           <Button
             variant="outline"
@@ -100,11 +117,11 @@ export default function PropertiesPage() {
           </Button>
 
           {/* Grid vs List View Mode Toggle */}
-          <div className="hidden sm:flex items-center bg-slate-100 p-1 rounded-xl">
+          <div className="hidden sm:flex items-center bg-[#f3f2ee] p-1 rounded-xl border border-[#e5e3dd]">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "grid" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500 hover:text-slate-900"
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === "grid" ? "bg-white text-slate-900 shadow-2xs font-bold" : "text-slate-500 hover:text-slate-900"
               }`}
               title="Grid View"
             >
@@ -112,8 +129,8 @@ export default function PropertiesPage() {
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "list" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500 hover:text-slate-900"
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === "list" ? "bg-white text-slate-900 shadow-2xs font-bold" : "text-slate-500 hover:text-slate-900"
               }`}
               title="List View"
             >

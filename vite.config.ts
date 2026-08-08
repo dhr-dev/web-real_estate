@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   server: {
-    allowedHosts: ['spent-backgrounds-podcasts-hist.trycloudflare.com']
+    allowedHosts: ['democrat-singh-jose-efficiency.trycloudflare.com']
   },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
 });

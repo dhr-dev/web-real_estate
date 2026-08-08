@@ -1,9 +1,11 @@
-import { Check, Filter, RotateCcw, X } from "lucide-react";
+import { Bed, Check, Filter, Home, MapPin, RotateCcw, Tag, X } from "lucide-react";
 import React from "react";
+import { ACTIVE_REGION_CONFIG } from "../../config/dataRegionConfig";
 import { PropertyFilterState, SortOption } from "../../types/filter";
 import { ListingType, PropertyType } from "../../types/property";
 import { cn } from "../../utils/cn";
 import { Button } from "../ui/Button";
+import { CustomSelect } from "../ui/CustomSelect";
 
 export interface FilterPanelProps {
   filters: PropertyFilterState;
@@ -39,6 +41,51 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   isMobileDrawer = false,
   onCloseMobileDrawer,
 }) => {
+  const cityOptions = [
+    { value: "all", label: `All ${ACTIVE_REGION_CONFIG.name}` },
+    ...ACTIVE_REGION_CONFIG.popularCities.map((c) => ({
+      value: c,
+      label: `${c}, ${ACTIVE_REGION_CONFIG.code}`,
+    })),
+  ];
+
+  const propertyTypeOptions = [
+    { value: "all", label: "All Property Types" },
+    { value: "apartment", label: "Apartment / Flat" },
+    { value: "house", label: "House" },
+    { value: "townhouse", label: "Townhouse" },
+    { value: "penthouse", label: "Penthouse" },
+    { value: "villa", label: "Villa" },
+  ];
+
+  const bedroomOptions = [
+    { value: "any", label: "Any Bedrooms" },
+    { value: "1", label: "1+ Bedroom" },
+    { value: "2", label: "2+ Bedrooms" },
+    { value: "3", label: "3+ Bedrooms" },
+    { value: "4", label: "4+ Bedrooms" },
+  ];
+
+  const maxPriceOptions =
+    filters.listingType === "rent"
+      ? [
+          { value: "all", label: "Any Price" },
+          { value: "1500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,500 / mo` },
+          { value: "2500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}2,500 / mo` },
+          { value: "3500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}3,500 / mo` },
+          { value: "5000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}5,000 / mo` },
+          { value: "8500", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}8,500 / mo` },
+        ]
+      : [
+          { value: "all", label: "Any Price" },
+          { value: "350000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}350,000` },
+          { value: "500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}500,000` },
+          { value: "750000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}750,000` },
+          { value: "1000000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,000,000` },
+          { value: "1500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}1,500,000` },
+          { value: "2500000", label: `Up to ${ACTIVE_REGION_CONFIG.currencySymbol}2,500,000` },
+        ];
+
   return (
     <div className={cn("bg-white rounded-2xl border border-[#e5e3dd] p-5 space-y-6 shadow-2xs", className)}>
       {/* Header */}
@@ -96,145 +143,91 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {/* 2. City Location */}
       <div className="space-y-2">
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          City / Location
-        </label>
-        <select
+        <CustomSelect
+          label="City / Location"
+          icon={MapPin}
+          options={cityOptions}
           value={filters.city}
-          onChange={(e) => onUpdateFilter("city", e.target.value)}
-          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
-        >
-          <option value="all">All Cities</option>
-          <option value="London">London, UK</option>
-          <option value="Manchester">Manchester, UK</option>
-          <option value="Edinburgh">Edinburgh, UK</option>
-          <option value="Bristol">Bristol, UK</option>
-          <option value="Amsterdam">Amsterdam, Netherlands</option>
-          <option value="Lisbon">Lisbon, Portugal</option>
-        </select>
+          onChange={(val) => onUpdateFilter("city", val)}
+        />
       </div>
 
       {/* 3. Property Type */}
       <div className="space-y-2">
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          Property Type
-        </label>
-        <select
+        <CustomSelect
+          label="Property Type"
+          icon={Home}
+          options={propertyTypeOptions}
           value={filters.propertyType}
-          onChange={(e) => onUpdateFilter("propertyType", e.target.value as PropertyType | "all")}
-          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
-        >
-          <option value="all">All Property Types</option>
-          <option value="house">House</option>
-          <option value="apartment">Apartment / Flat</option>
-          <option value="penthouse">Penthouse</option>
-          <option value="townhouse">Townhouse</option>
-          <option value="villa">Villa</option>
-        </select>
-      </div>
-
-      {/* Max Price Filter */}
-      <div className="space-y-2">
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          Maximum Price
-        </label>
-        <select
-          value={filters.maxPrice < 10000000 ? String(filters.maxPrice) : "all"}
-          onChange={(e) => onUpdateFilter("maxPrice", e.target.value === "all" ? 10000000 : Number(e.target.value))}
-          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
-        >
-          <option value="all">Any Price</option>
-          {filters.listingType === "rent" ? (
-            <>
-              <option value="1500">Up to £1,500 / mo</option>
-              <option value="2000">Up to £2,000 / mo</option>
-              <option value="2500">Up to £2,500 / mo</option>
-              <option value="3500">Up to £3,500 / mo</option>
-            </>
-          ) : (
-            <>
-              <option value="350000">Up to £350,000</option>
-              <option value="500000">Up to £500,000</option>
-              <option value="750000">Up to £750,000</option>
-              <option value="1000000">Up to £1,000,000</option>
-              <option value="1500000">Up to £1,500,000</option>
-            </>
-          )}
-        </select>
+          onChange={(val) => onUpdateFilter("propertyType", val as PropertyType | "all")}
+        />
       </div>
 
       {/* 4. Bedrooms */}
       <div className="space-y-2">
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          Minimum Bedrooms
-        </label>
-        <div className="flex items-center gap-1.5 flex-wrap">
-          {(["any", 1, 2, 3, 4, 5] as const).map((num) => (
-            <button
-              key={String(num)}
-              type="button"
-              onClick={() => onUpdateFilter("bedrooms", num)}
-              className={cn(
-                "flex-1 min-w-[42px] py-1.5 text-xs font-bold rounded-lg border transition-all cursor-pointer",
-                filters.bedrooms === num
-                  ? "bg-slate-900 text-white border-slate-900"
-                  : "border-[#e5e3dd] bg-[#f8f7f4] text-slate-700 hover:bg-white"
-              )}
-            >
-              {num === "any" ? "Any" : `${num}+`}
-            </button>
-          ))}
-        </div>
+        <CustomSelect
+          label="Minimum Bedrooms"
+          icon={Bed}
+          options={bedroomOptions}
+          value={String(filters.bedrooms)}
+          onChange={(val) => onUpdateFilter("bedrooms", val === "any" ? "any" : Number(val))}
+        />
       </div>
 
-      {/* 5. Sort By */}
+      {/* 5. Max Price Filter */}
       <div className="space-y-2">
-        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          Sort Results By
-        </label>
-        <select
-          value={filters.sortBy}
-          onChange={(e) => onUpdateFilter("sortBy", e.target.value as SortOption)}
-          className="w-full bg-[#f8f7f4] text-slate-900 text-sm font-semibold rounded-xl px-3 py-2 border border-[#e5e3dd] focus:outline-none focus:ring-2 focus:ring-slate-900 transition-colors"
-        >
-          <option value="newest">Newest Listed First</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="bedrooms-desc">Bedrooms: Most First</option>
-          <option value="area-desc">Floor Area: Largest First</option>
-        </select>
+        <CustomSelect
+          label="Maximum Price"
+          icon={Tag}
+          options={maxPriceOptions}
+          value={filters.maxPrice < 10000000 ? String(filters.maxPrice) : "all"}
+          onChange={(val) => onUpdateFilter("maxPrice", val === "all" ? 10000000 : Number(val))}
+        />
       </div>
 
-      {/* 6. Desired Amenities */}
+      {/* 6. Key Features Checkboxes */}
       <div className="space-y-3 pt-2 border-t border-[#e5e3dd]">
         <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-          Amenities & Features
+          Must-Have Features
         </label>
-        <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+        <div className="space-y-2">
           {AVAILABLE_FEATURES.map((feature) => {
             const isChecked = filters.features.includes(feature);
             return (
               <label
                 key={feature}
-                className="flex items-center justify-between text-xs text-slate-700 cursor-pointer hover:text-slate-900 py-1"
+                onClick={() => onToggleFeature(feature)}
+                className="flex items-center gap-2.5 text-xs text-slate-700 font-medium cursor-pointer hover:text-slate-900 group select-none"
               >
+                <div
+                  className={cn(
+                    "w-4 h-4 rounded-md border flex items-center justify-center transition-colors shrink-0",
+                    isChecked
+                      ? "bg-slate-900 border-slate-900 text-white"
+                      : "border-slate-300 bg-[#f8f7f4] group-hover:border-slate-400"
+                  )}
+                >
+                  {isChecked && <Check className="w-3 h-3 text-amber-400 stroke-[3]" />}
+                </div>
                 <span>{feature}</span>
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={() => onToggleFeature(feature)}
-                  className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
-                />
               </label>
             );
           })}
         </div>
       </div>
 
-      {isMobileDrawer && (
-        <Button variant="primary" size="md" className="w-full mt-4" onClick={onCloseMobileDrawer}>
-          Show Matching Properties
-        </Button>
+      {/* Mobile Drawer Submit Button */}
+      {isMobileDrawer && onCloseMobileDrawer && (
+        <div className="pt-4 border-t border-[#e5e3dd]">
+          <Button
+            variant="dark"
+            size="md"
+            className="w-full justify-center font-bold rounded-xl"
+            onClick={onCloseMobileDrawer}
+          >
+            Apply Filters ({activeFilterCount})
+          </Button>
+        </div>
       )}
     </div>
   );

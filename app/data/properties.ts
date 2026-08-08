@@ -1,7 +1,9 @@
+import { ACTIVE_REGION_CODE } from "../config/dataRegionConfig";
 import { Property } from "../types/property";
 import { AGENTS } from "./agents";
+import { US_PROPERTIES } from "./properties.us";
 
-export const PROPERTIES: Property[] = [
+export const UK_PROPERTIES: Property[] = [
   {
     id: "haven-101",
     title: "18 Cadogan Gardens Apartment",
@@ -880,3 +882,5 @@ export const PROPERTIES: Property[] = [
     yearBuilt: 2020,
   },
 ];
+
+export const PROPERTIES: Property[] = ACTIVE_REGION_CODE === "US" ? US_PROPERTIES : UK_PROPERTIES;
